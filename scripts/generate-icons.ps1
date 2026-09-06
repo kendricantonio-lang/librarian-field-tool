@@ -12,7 +12,7 @@ function New-Icon {
     $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
     $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAlias
 
-    $bgColor = [System.Drawing.ColorTranslator]::FromHtml('#2563eb')
+    $bgColor = [System.Drawing.ColorTranslator]::FromHtml('#3f6b4f')
     $g.Clear($bgColor)
 
     $textColor = [System.Drawing.Color]::White

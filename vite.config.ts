@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'Librarian Field Tool',
         short_name: 'Librarian Tool',
         description: 'Field tool for library workflows.',
-        theme_color: '#2563eb',
-        background_color: '#f5f6f8',
+        theme_color: '#3f6b4f',
+        background_color: '#f2ecdd',
         display: 'standalone',
         start_url: '/',
         icons: [

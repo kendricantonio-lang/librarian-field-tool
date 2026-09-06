@@ -242,7 +242,7 @@ export function TeachersPage() {
             onClick={() => setActive(teacher.id)}
           >
             <div className="record-summary">
-              <FieldList fields={listFields.filter((f) => f.key !== 'notes')} data={teacher.data} />
+              <FieldList fields={listFields} data={teacher.data} />
             </div>
             <button
               className="secondary edit-button"
