@@ -397,6 +397,86 @@ select {
   width: auto;
 }
 
+.day-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.day-tab {
+  flex: 1;
+  padding: 0.5rem 0;
+}
+
+.schedule-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  color: #1a1d23;
+}
+
+.schedule-block-time {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.schedule-block-label {
+  font-size: 0.95rem;
+}
+
+.color-swatch-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+}
+
+.color-swatch.selected {
+  border-color: var(--text);
+}
+
+.swatch-red {
+  background: #e2a89b;
+}
+
+.swatch-peach {
+  background: #f2dbb4;
+}
+
+.swatch-yellow {
+  background: #f0dd7e;
+}
+
+.swatch-green {
+  background: #b9d4a0;
+}
+
+.swatch-blue {
+  background: #a9c6e0;
+}
+
+.swatch-purple {
+  background: #cba9cf;
+}
+
+.swatch-teal {
+  background: #a3c4c6;
+}
+
+.swatch-gray {
+  background: #d7dadf;
+}
+
 .carousel-hint {
   text-align: center;
   color: var(--muted);

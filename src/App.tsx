@@ -5,7 +5,7 @@ import { LoginPage } from './pages/LoginPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { TeachersPage } from './pages/TeachersPage';
 import { BooksPage } from './pages/BooksPage';
-import { PlaceholderPage } from './pages/PlaceholderPage';
+import { SchedulePage } from './pages/SchedulePage';
 
 // Add new tabs here as real features get built — same pattern the sales
 // field tool uses.
@@ -73,7 +73,7 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route path="/" element={<Navigate to="/calendar" replace />} />
-          <Route path="/schedule" element={<PlaceholderPage title="Schedule" />} />
+          <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/books" element={<BooksPage />} />
           <Route path="/teachers" element={<TeachersPage />} />

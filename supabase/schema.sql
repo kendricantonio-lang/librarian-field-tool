@@ -60,3 +60,22 @@ create policy "Users manage own books" on books
   for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- data.teacherId (optional) links to teachers.id — see src/lib/scheduleUtils.ts.
+create table if not exists schedule_blocks (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists schedule_blocks_user_id_idx on schedule_blocks (user_id);
+
+alter table schedule_blocks enable row level security;
+
+drop policy if exists "Users manage own schedule_blocks" on schedule_blocks;
+create policy "Users manage own schedule_blocks" on schedule_blocks
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

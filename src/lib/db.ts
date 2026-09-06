@@ -124,3 +124,46 @@ export async function deleteBook(id: string): Promise<void> {
   const { error } = await supabase.from('books').delete().eq('id', id);
   if (error) throw error;
 }
+
+export interface ScheduleBlockRecord {
+  id: string;
+  data: FieldValues;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function listScheduleBlocks(): Promise<ScheduleBlockRecord[]> {
+  const { data, error } = await supabase
+    .from('schedule_blocks')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data as ScheduleBlockRecord[];
+}
+
+export async function createScheduleBlock(values: FieldValues): Promise<ScheduleBlockRecord> {
+  const { data: userData } = await supabase.auth.getUser();
+  const { data, error } = await supabase
+    .from('schedule_blocks')
+    .insert({ data: values, user_id: userData.user?.id })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ScheduleBlockRecord;
+}
+
+export async function updateScheduleBlock(id: string, values: FieldValues): Promise<ScheduleBlockRecord> {
+  const { data, error } = await supabase
+    .from('schedule_blocks')
+    .update({ data: values, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as ScheduleBlockRecord;
+}
+
+export async function deleteScheduleBlock(id: string): Promise<void> {
+  const { error } = await supabase.from('schedule_blocks').delete().eq('id', id);
+  if (error) throw error;
+}
