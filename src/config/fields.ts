@@ -25,3 +25,11 @@ export const TEACHER_FIELDS: FieldDef[] = [
   { key: 'gradeLevel', label: 'Grade Level', type: 'text', required: true, showInList: true },
   { key: 'notes', label: 'Notes', type: 'textarea' },
 ];
+
+// Books also store a `teacherIds` key (a JSON-encoded array of teacher
+// record ids) for which classes it's been read to — a real many-to-many
+// link, not a simple text field, so it's handled by a custom picker in
+// BooksPage rather than through this FieldDef/DynamicForm pattern.
+export const BOOK_FIELDS: FieldDef[] = [
+  { key: 'title', label: 'Title', type: 'text', required: true, showInList: true },
+];

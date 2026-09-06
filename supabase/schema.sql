@@ -40,3 +40,23 @@ create policy "Users manage own teachers" on teachers
   for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- data.teacherIds is a JSON-encoded array of teacher ids (which classes a
+-- book has been read to) — see src/lib/teacherLinks.ts.
+create table if not exists books (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists books_user_id_idx on books (user_id);
+
+alter table books enable row level security;
+
+drop policy if exists "Users manage own books" on books;
+create policy "Users manage own books" on books
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

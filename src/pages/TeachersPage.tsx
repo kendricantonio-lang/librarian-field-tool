@@ -1,11 +1,38 @@
 import { useEffect, useState } from 'react';
 import { TEACHER_FIELDS } from '../config/fields';
 import { DynamicForm, type FieldValues } from '../components/DynamicForm';
-import { createTeacher, listTeachers, updateTeacher, type TeacherRecord } from '../lib/db';
+import { parseTeacherIds } from '../lib/teacherLinks';
+import {
+  createTeacher,
+  listBooks,
+  listTeachers,
+  updateTeacher,
+  type BookRecord,
+  type TeacherRecord,
+} from '../lib/db';
 
 const ACTIVE_TEACHER_KEY = 'lft.activeTeacherId';
 
 const listFields = TEACHER_FIELDS.filter((f) => f.showInList);
+
+function booksForTeacher(books: BookRecord[], teacherId: string): BookRecord[] {
+  return books.filter((b) => parseTeacherIds(b.data.teacherIds).includes(teacherId));
+}
+
+function BookChips({ books }: { books: BookRecord[] }) {
+  if (books.length === 0) {
+    return <p className="muted">No books logged for this class yet.</p>;
+  }
+  return (
+    <ul className="chip-list">
+      {books.map((b) => (
+        <li key={b.id} className="chip">
+          {b.data.title}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 /** Numeric compare when both sides parse as numbers, otherwise alphabetical. */
 function compareFieldValues(a: string, b: string): number {
@@ -33,6 +60,7 @@ function FieldList({ fields, data }: { fields: typeof TEACHER_FIELDS; data: Fiel
 
 export function TeachersPage() {
   const [teachers, setTeachers] = useState<TeacherRecord[]>([]);
+  const [books, setBooks] = useState<BookRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -61,14 +89,14 @@ export function TeachersPage() {
 
   async function refresh() {
     setLoading(true);
-    try {
-      setTeachers(await listTeachers());
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load teachers');
-    } finally {
-      setLoading(false);
-    }
+    const [teacherResult, bookResult] = await Promise.allSettled([listTeachers(), listBooks()]);
+    if (teacherResult.status === 'fulfilled') setTeachers(teacherResult.value);
+    if (bookResult.status === 'fulfilled') setBooks(bookResult.value);
+
+    const failure =
+      teacherResult.status === 'rejected' ? teacherResult.reason : bookResult.status === 'rejected' ? bookResult.reason : null;
+    setError(failure instanceof Error ? failure.message : failure ? 'Failed to load data' : null);
+    setLoading(false);
   }
 
   function setActive(id: string) {
@@ -149,6 +177,8 @@ export function TeachersPage() {
           <div className="record-summary">
             <FieldList fields={listFields.filter((f) => f.key !== 'notes')} data={activeTeacher.data} />
           </div>
+          <h4>Books read to this class</h4>
+          <BookChips books={booksForTeacher(books, activeTeacher.id)} />
           <h4>Notes</h4>
           <textarea
             value={notesDraft}
