@@ -1,13 +1,6 @@
 // Single source of truth for the fields on each record type — same pattern
-// as the sales field tool. Define a FieldDef[] per entity here once the
-// library-specific data model is known, and DynamicForm + list views will
-// pick it up automatically.
-//
-// Example:
-// export const PATRON_FIELDS: FieldDef[] = [
-//   { key: 'name', label: 'Name', type: 'text', required: true, showInList: true },
-//   { key: 'cardNumber', label: 'Card Number', type: 'text', showInList: true },
-// ];
+// as the sales field tool. Define a FieldDef[] per entity here, and
+// DynamicForm + list views pick it up automatically.
 
 export type FieldType = 'text' | 'textarea' | 'date' | 'phone' | 'email';
 
@@ -20,3 +13,9 @@ export interface FieldDef {
   /** Shown in the list summary line. */
   showInList?: boolean;
 }
+
+export const EVENT_FIELDS: FieldDef[] = [
+  { key: 'date', label: 'Date', type: 'date', required: true, showInList: true },
+  { key: 'title', label: 'Event', type: 'text', required: true, showInList: true },
+  { key: 'notes', label: 'Notes', type: 'textarea' },
+];

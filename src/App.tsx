@@ -2,11 +2,17 @@ import { useEffect, useState } from 'react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { LoginPage } from './pages/LoginPage';
-import { HomePage } from './pages/HomePage';
+import { CalendarPage } from './pages/CalendarPage';
+import { PlaceholderPage } from './pages/PlaceholderPage';
 
 // Add new tabs here as real features get built — same pattern the sales
 // field tool uses.
-const NAV_LINKS = [{ to: '/home', label: 'Home' }];
+const NAV_LINKS = [
+  { to: '/schedule', label: 'Schedule' },
+  { to: '/calendar', label: 'Calendar' },
+  { to: '/books', label: 'Books' },
+  { to: '/teachers', label: 'Teachers' },
+];
 
 export default function App() {
   const { user, loading, signOut } = useAuth();
@@ -64,9 +70,12 @@ export default function App() {
 
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="/" element={<Navigate to="/calendar" replace />} />
+          <Route path="/schedule" element={<PlaceholderPage title="Schedule" />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/books" element={<PlaceholderPage title="Books" />} />
+          <Route path="/teachers" element={<PlaceholderPage title="Teachers" />} />
+          <Route path="*" element={<Navigate to="/calendar" replace />} />
         </Routes>
       </main>
     </div>
