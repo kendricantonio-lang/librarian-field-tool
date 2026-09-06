@@ -3,6 +3,7 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { LoginPage } from './pages/LoginPage';
 import { CalendarPage } from './pages/CalendarPage';
+import { TeachersPage } from './pages/TeachersPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 
 // Add new tabs here as real features get built — same pattern the sales
@@ -74,7 +75,7 @@ export default function App() {
           <Route path="/schedule" element={<PlaceholderPage title="Schedule" />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/books" element={<PlaceholderPage title="Books" />} />
-          <Route path="/teachers" element={<PlaceholderPage title="Teachers" />} />
+          <Route path="/teachers" element={<TeachersPage />} />
           <Route path="*" element={<Navigate to="/calendar" replace />} />
         </Routes>
       </main>

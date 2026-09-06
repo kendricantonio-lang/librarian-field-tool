@@ -348,6 +348,87 @@ select {
   font-weight: 600;
 }
 
+.carousel-hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem;
+}
+
+.card-carousel {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1rem;
+  padding: 0.25rem 0.25rem 1.25rem;
+  margin: 0 -0.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-carousel .carousel-card {
+  flex: 0 0 85%;
+  scroll-snap-align: center;
+  min-height: 58vh;
+  padding: 1.5rem 1.25rem;
+  transition: min-height 0.2s ease, padding 0.2s ease;
+}
+
+.card-carousel .carousel-card .record-summary {
+  gap: 0.65rem;
+}
+
+.card-carousel .carousel-card .record-field {
+  font-size: 1rem;
+}
+
+.card-carousel.is-compact .carousel-card {
+  min-height: 0;
+  padding: 0.8rem 1rem;
+}
+
+.card-carousel.is-compact .carousel-card .record-summary {
+  gap: 0.15rem;
+}
+
+.card-carousel.is-compact .carousel-card .record-field {
+  font-size: 0.9rem;
+}
+
+.card-carousel p {
+  flex: 0 0 100%;
+}
+
+.carousel-card {
+  align-items: flex-start;
+  cursor: pointer;
+  border-width: 1px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.carousel-card.is-active {
+  border-color: var(--accent);
+  border-width: 2px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.edit-button {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.7rem;
+}
+
+.active-record-panel {
+  border-color: var(--accent);
+  border-width: 2px;
+}
+
+.active-record-panel .record-summary {
+  gap: 0.5rem;
+  cursor: default;
+  margin-bottom: 0.75rem;
+}
+
 .muted {
   color: var(--muted);
   font-size: 0.9rem;

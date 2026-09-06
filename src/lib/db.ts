@@ -43,3 +43,41 @@ export async function deleteEvent(id: string): Promise<void> {
   const { error } = await supabase.from('events').delete().eq('id', id);
   if (error) throw error;
 }
+
+export interface TeacherRecord {
+  id: string;
+  data: FieldValues;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function listTeachers(): Promise<TeacherRecord[]> {
+  const { data, error } = await supabase
+    .from('teachers')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data as TeacherRecord[];
+}
+
+export async function createTeacher(values: FieldValues): Promise<TeacherRecord> {
+  const { data: userData } = await supabase.auth.getUser();
+  const { data, error } = await supabase
+    .from('teachers')
+    .insert({ data: values, user_id: userData.user?.id })
+    .select()
+    .single();
+  if (error) throw error;
+  return data as TeacherRecord;
+}
+
+export async function updateTeacher(id: string, values: FieldValues): Promise<TeacherRecord> {
+  const { data, error } = await supabase
+    .from('teachers')
+    .update({ data: values, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data as TeacherRecord;
+}

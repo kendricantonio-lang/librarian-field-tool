@@ -22,3 +22,21 @@ create policy "Users manage own events" on events
   for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+create table if not exists teachers (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists teachers_user_id_idx on teachers (user_id);
+
+alter table teachers enable row level security;
+
+drop policy if exists "Users manage own teachers" on teachers;
+create policy "Users manage own teachers" on teachers
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);

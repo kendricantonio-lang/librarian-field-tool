@@ -19,3 +19,9 @@ export const EVENT_FIELDS: FieldDef[] = [
   { key: 'title', label: 'Event', type: 'text', required: true, showInList: true },
   { key: 'notes', label: 'Notes', type: 'textarea' },
 ];
+
+export const TEACHER_FIELDS: FieldDef[] = [
+  { key: 'lastName', label: 'Last Name', type: 'text', required: true, showInList: true },
+  { key: 'gradeLevel', label: 'Grade Level', type: 'text', required: true, showInList: true },
+  { key: 'notes', label: 'Notes', type: 'textarea' },
+];
