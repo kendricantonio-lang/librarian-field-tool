@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { FieldValues } from '../components/DynamicForm';
 import { BLOCK_COLORS, DAYS, formatTime12h, suggestLabel } from '../lib/scheduleUtils';
+import { pinTeacherActive } from '../lib/activeTeacher';
 import {
   createScheduleBlock,
   deleteScheduleBlock,
@@ -20,6 +22,8 @@ export function SchedulePage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<FieldValues>({});
   const [showForm, setShowForm] = useState(false);
+  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     refresh();
@@ -84,15 +88,26 @@ export function SchedulePage() {
     try {
       await deleteScheduleBlock(id);
       setShowForm(false);
+      setSelectedBlockId(null);
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete block');
     }
   }
 
+  function handleViewTeacher(teacherId: string) {
+    pinTeacherActive(teacherId);
+    navigate('/teachers');
+  }
+
   const dayBlocks = blocks
     .filter((b) => b.data.day === selectedDay)
     .sort((a, b) => (a.data.startTime ?? '').localeCompare(b.data.startTime ?? ''));
+
+  const selectedBlock = blocks.find((b) => b.id === selectedBlockId) ?? null;
+  const selectedTeacher = selectedBlock
+    ? teachers.find((t) => t.id === selectedBlock.data.teacherId) ?? null
+    : null;
 
   return (
     <div className="page">
@@ -115,6 +130,33 @@ export function SchedulePage() {
 
       {error && <p className="form-error">{error}</p>}
       {loading && <p>Loading...</p>}
+
+      {selectedBlock && !showForm && (
+        <div className="panel">
+          <div className="panel-title-row">
+            <h3>
+              {selectedBlock.data.day} · {formatTime12h(selectedBlock.data.startTime)}–
+              {formatTime12h(selectedBlock.data.endTime)}
+            </h3>
+            <button className="link-button" onClick={() => setSelectedBlockId(null)}>
+              Close
+            </button>
+          </div>
+          <p className="record-field">
+            {selectedTeacher ? (
+              <button className="link-button" onClick={() => handleViewTeacher(selectedTeacher.id)}>
+                {selectedTeacher.data.lastName}
+              </button>
+            ) : (
+              <span className="muted">No teacher assigned</span>
+            )}
+            {selectedBlock.data.label && ` — ${selectedBlock.data.label}`}
+          </p>
+          <div className="panel-actions">
+            <button onClick={() => startEdit(selectedBlock)}>Edit</button>
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <div className="panel">
@@ -204,8 +246,8 @@ export function SchedulePage() {
           return (
             <li
               key={block.id}
-              className={`schedule-block swatch-${block.data.color || 'gray'}`}
-              onClick={() => startEdit(block)}
+              className={`schedule-block swatch-${block.data.color || 'gray'}${block.id === selectedBlockId ? ' is-selected' : ''}`}
+              onClick={() => setSelectedBlockId(block.id)}
             >
               <span className="schedule-block-time">
                 {formatTime12h(block.data.startTime)}–{formatTime12h(block.data.endTime)}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TEACHER_FIELDS } from '../config/fields';
 import { DynamicForm, type FieldValues } from '../components/DynamicForm';
 import { parseTeacherIds } from '../lib/teacherLinks';
+import { ACTIVE_TEACHER_KEY } from '../lib/activeTeacher';
 import {
   createTeacher,
   listBooks,
@@ -10,8 +11,6 @@ import {
   type BookRecord,
   type TeacherRecord,
 } from '../lib/db';
-
-const ACTIVE_TEACHER_KEY = 'lft.activeTeacherId';
 
 const listFields = TEACHER_FIELDS.filter((f) => f.showInList);
 

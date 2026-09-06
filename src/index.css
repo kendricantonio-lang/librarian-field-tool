@@ -416,6 +416,11 @@ select {
   padding: 0.9rem 1rem;
   cursor: pointer;
   color: #1a1d23;
+  border: 2px solid transparent;
+}
+
+.schedule-block.is-selected {
+  border-color: var(--text);
 }
 
 .schedule-block-time {
